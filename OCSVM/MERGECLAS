@@ -1,0 +1,25 @@
+
+import pandas as pd
+
+
+df_carac = pd.read_csv('creditcard_anomalies.csv')
+df_lbl   = pd.read_csv('creditcard_labels.csv')
+
+
+if len(df_carac) != len(df_lbl):
+    raise ValueError(' filas de anomalies y labels no coincide.')
+
+
+df_carac['Class'] = df_lbl['Class'].values
+
+
+df = df_carac
+
+normales = df.loc[df['Class'] == 0, df.columns.difference(['Class'])]
+test_all = df.copy()
+y_true   = test_all['Class'].values
+X_all    = test_all.drop(columns=['Class']).values
+
+
+print(df.head())
+print(f"Total normales: {len(normales)}, Total muestras: {len(df)}")
